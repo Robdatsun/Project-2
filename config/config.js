@@ -1,27 +1,28 @@
 module.exports = {
     "development": {
-      "username": "root",
-      "password": "Frontier280",
-      "database": "",
+      "username": process.env.DB_USER,
+      "password": process.env.DB_PASS,
+      "database": process.env.DB_NAME,
       "host": "127.0.0.1",
       "port": 3306,
       "dialect": "mysql"
     },
     "test": {
       "username": "root",
-      "password": "Frontier280",
+      "password": null,
       "database": "database_test",
       "host": "127.0.0.1",
       "port": 3306,
       "dialect": "mysql"
     },
     "production": {
-      "username": "root",
-      "password": "Frontier280",
-      "database": "database_production",
+      "username": process.env.JAWSDB_USER,
+      "password": process.env.JAWSDB_PASS,
+      "database": process.env.JAWSDB_DB,
       "host": "127.0.0.1",
       "port": 3306,
-      "dialect": "mysql"
+      "dialect": "mysql",
+      "use_env_variable": "JAWSDB_URL"
     }
   }
   
