@@ -1,3 +1,5 @@
+// Obj random variable placement
+
 // Modules
 const router = require("express").Router();
 const path = require("path");
@@ -7,7 +9,7 @@ const isUserAuthenticated = require("../config/authorization");
 // Secure Route--isUserAuthenticated is a middlewear
 
 router.get("/secret", isUserAuthenticated, (req, res) => {
-    res.sendFile(path.join(__dirname, "../public/secret.html"));
+    res.render("index", Obj);
 });
 
 module.exports = router;
