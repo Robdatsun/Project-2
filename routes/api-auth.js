@@ -1,4 +1,4 @@
-// will change res.sendFile to res.render
+// Obj is just a random variable placement
 
 // Modules
 const path = require("path");
@@ -15,7 +15,7 @@ router.get('/auth/google',
 router.get('/auth/google/callback',
     passport.authenticate('google'),
     (req, res) => {
-        res.sendFile(path.join(__dirname, "../public/secret.html"));
+        res.render("index",Obj);
     }
 );
 
@@ -23,7 +23,7 @@ router.get('/auth/google/callback',
 // Logout route to deserialize
 router.get("/logout", (req, res) => {
     req.logOut();
-    res.sendFile(path.join(__dirname, "../public/index.html"));
+    res.render("index",Obj)
 })
 
 
