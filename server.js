@@ -2,6 +2,8 @@
 // =============================================================
 require('dotenv').config() // for initializing .env file | for keeping your passwords secret
 const express = require("express");
+const session = require("express-session");
+const passport = require("./config/authentication");
 const db = require("./models");
 
 // Sets up the Express App
@@ -21,6 +23,11 @@ const exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
+
+// We need to use sessions to keep track of our user's login status
+app.use(session({ secret: process.env.session_secret, resave: true, saveUninitialized: true })); // ????????
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routes
 // =============================================================
