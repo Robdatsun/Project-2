@@ -1,3 +1,5 @@
+// res.sendFile will change to res.render
+
 // Modules
 const router = require("express").Router();
 const path = require("path");
