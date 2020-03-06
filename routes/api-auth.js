@@ -6,7 +6,7 @@ const router = require("express").Router();
 const passport = require("../config/authentication");
 
 // Setup route to redirect to google to authenticate 
-router.get('/auth/google',
+router.get('/auth/google', 
     // scope looks for which kind of data to use to verify and authenticate
     passport.authenticate('google', { scope: ['profile'] })
 );
