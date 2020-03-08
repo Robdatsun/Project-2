@@ -7,11 +7,11 @@ module.exports = function (app) {
         db.ProfStock.findAll().then(function (result) { // grab symbols from seed database
             stocksSearch = { symbols: result };
             // res.json(stocksSearch);
-           return db.ProfNews.findAll();
+            return db.ProfNews.findAll();
         }).then(function (result) { // grab topics from seed database
             newsSearch = { topics: result };
 
-            res.json({stocks: stocksSearch, news: newsSearch});
+            res.json({ stocks: stocksSearch, news: newsSearch });
             // res.json(newsSearch);
         })
 
@@ -23,23 +23,44 @@ module.exports = function (app) {
         db.ProfNews.create({
             topic: req.body.topic
         })
-        .then(function (result){
-            res.json(true);
-        })
-        .catch(function (err){
-            res.json(err);
-        })
+            .then(function (result) {
+                res.json(true);
+            })
+            .catch(function (err) {
+                res.json(err);
+            })
     })
 
-    app.post("/api/interests/symbols", function (req,res){
+    app.delete("/api/interest/news/:id", function (req, res) {
+        db.ProfNews.destroy({
+            where: {
+                id: req.body.id
+            }
+        }).then(function (ProfNews) {
+            res.json(ProfNews);
+        })
+    });
+
+
+    app.post("/api/interests/symbols", function (req, res) {
         db.ProfStock.create({
             symbol: req.body.symbol
         })
-        .then(function(result){
-            res.json(true);
-        })
-        .catch(function(err){
-            res.json(err);
-        });
+            .then(function (result) {
+                res.json(true);
+            })
+            .catch(function (err) {
+                res.json(err);
+            });
     });
+
+    app.delete("/api/interest/news/:id", function (req, res) {
+        db.ProfStock.destroy({
+            where: {
+                id: req.body.symbol
+            }
+        }).then(function (ProfStock) {
+            res.json(ProfStock)
+        })
+    })
 }
