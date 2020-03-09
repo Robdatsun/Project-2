@@ -1,49 +1,57 @@
 const db = require("../models");
+const fetch = require('node-fetch');
 
 module.exports = function (app) {
-    let stocksSearch;
-    let newsSearch;
-    app.get("/api", function (req, res) {
-        db.ProfStock.findAll().then(function (result) { // grab symbols from seed database
-            stocksSearch = { symbols: result };
-            // res.json(stocksSearch);
-            return db.ProfNews.findAll();
-        }).then(function (result) { // grab topics from seed database
-            newsSearch = { topics: result };
 
-            res.json({ stocks: stocksSearch, news: newsSearch });
-            // res.json(newsSearch);
-        })
 
-        /// how to chain to make an ajax call to grab info from stocks api and news api then render
-
-    });
-
-    app.post("/api/interests/news", function (req, res) {
-        db.ProfNews.create({
-            topic: req.body.topic
-        })
+    app.get("/", function (req, res) {
+        let queriesNews = [];
+        let queriesStocks = [];
+        let newsResults = [];
+        let stocksResults = [];
+        
+        db.Stock.findAll()
+            // grab symbols from seed database
             .then(function (result) {
-                res.json(true);
-            })
-            .catch(function (err) {
-                res.json(err);
-            })
-    })
+                for (let i = 0; i < result.length; i++) {
 
-    app.delete("/api/interest/news/:id", function (req, res) {
-        db.ProfNews.destroy({
-            where: {
-                id: req.body.id
-            }
-        }).then(function (ProfNews) {
-            res.json(ProfNews);
-        })
+                    let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + result[i].dataValues.symbol.toUpperCase() + "&items=3&token=" + process.env.apiKeyStockNews;
+                    queriesNews.push(fetch(queryURL_news));
+                    let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + result[i].dataValues.symbol.toUpperCase() + "&apikey=" + process.env.apiKeyAlphaVantage1;
+                    queriesStocks.push(fetch(queryURL_stocks));
+                }
+
+                return Promise.all(queriesNews);
+            })
+            .then(results => {
+                results.forEach(result => {
+                    result.json().then(json => {
+                        newsResults.push(json);
+                    })
+                })
+                return Promise.all(queriesStocks)
+            })
+            .then(async (results) => {
+                await results.forEach(result => {
+                    result.json().then(json => stocksResults.push(json))
+                    // console.log(stocksResults)
+                })
+            })
+            .then(results => {
+                let hbsObj = {
+                    stocks: stocksResults,
+                    news: newsResults
+                }
+                console.log(stocksResults, "====== stock ======");
+                console.log(newsResults, "====== news ========")
+
+                res.render("index", hbsObj);
+            })
+            .catch((err) => { if (err) throw err });
     });
-
-
-    app.post("/api/interests/symbols", function (req, res) {
-        db.ProfStock.create({
+    // posting into database works
+    app.post("/api/symbols", function (req, res) {
+        db.Stock.create({
             symbol: req.body.symbol
         })
             .then(function (result) {
@@ -53,14 +61,4 @@ module.exports = function (app) {
                 res.json(err);
             });
     });
-
-    app.delete("/api/interest/news/:id", function (req, res) {
-        db.ProfStock.destroy({
-            where: {
-                id: req.body.symbol
-            }
-        }).then(function (ProfStock) {
-            res.json(ProfStock)
-        })
-    })
 }
