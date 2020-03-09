@@ -28,11 +28,11 @@ module.exports = function (app) {
                     queriesStocks.push(fetch(queryURL_stocks));
                 }
 
-                let queryURL_dow = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=DOW&apikey=" + process.env.apiKeyAlphaVantage1;
+                let queryURL_dow = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=DOW&apikey=" + process.env.apiKeyAlphaVantage2;
                 queriesdow.push(fetch(queryURL_dow));
-                let queryURL_nasdaq = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=NDAQ&apikey=" + process.env.apiKeyAlphaVantage1;
+                let queryURL_nasdaq = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=NDAQ&apikey=" + process.env.apiKeyAlphaVantage3;
                 queriesnasdaq.push(fetch(queryURL_nasdaq));
-                let queryURL_snp = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=SNP&apikey=" + process.env.apiKeyAlphaVantage1;
+                let queryURL_snp = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=SNP&apikey=" + process.env.apiKeyAlphaVantage4;
                 queriessnp.push(fetch(queryURL_snp));
                 // fulfill a promise
                 return Promise.all(queriesdow);
