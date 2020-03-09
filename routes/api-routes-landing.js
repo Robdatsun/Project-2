@@ -10,17 +10,13 @@ module.exports = function (app) {
         let queriesStocks = [];
         let newsResults = [];
         let stocksResults = [];
-
-        // find all sequelize query
-
         let queriesdow = [];
         let dow = [];
         let queriesnasdaq = [];
         let nasdaq = [];
         let queriessnp = [];
         let snp = [];        
-        
-
+        // find all sequelize queries
         db.Stock.findAll()
             // grab symbols from seed database
             .then(function (result) {
@@ -32,39 +28,43 @@ module.exports = function (app) {
                     queriesStocks.push(fetch(queryURL_stocks));
                 }
 
-                // fulfill a promise
-
                 let queryURL_dow = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=DOW&apikey=" + process.env.apiKeyAlphaVantage1;
                 queriesdow.push(fetch(queryURL_dow));
                 let queryURL_nasdaq = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=NDAQ&apikey=" + process.env.apiKeyAlphaVantage1;
                 queriesnasdaq.push(fetch(queryURL_nasdaq));
                 let queryURL_snp = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=SNP&apikey=" + process.env.apiKeyAlphaVantage1;
                 queriessnp.push(fetch(queryURL_snp));
+                // fulfill a promise
                 return Promise.all(queriesdow);
             })
+            // turn results into json format
             .then(results => {
                 results.forEach(result => {
                     result.json().then(json => {
                         dow.push(json);
                     })
                 })
+                // fulfill a promise
                 return Promise.all(queriesnasdaq);
             })
+            // turn results into json format
             .then(results => {
                 results.forEach(result => {
                     result.json().then(json => {
                         nasdaq.push(json);
                     })
                 })
+                // fulfill a promise
                 return Promise.all(queriessnp);
             })
+            // turn results into json format
             .then(results => {
                 results.forEach(result => {
                     result.json().then(json => {
                         snp.push(json);
                     })
                 })
-
+                // fulfill a promise
                 return Promise.all(queriesNews);
             })
             // turn results into json format
