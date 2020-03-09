@@ -93,6 +93,8 @@ module.exports = function (app) {
                     nasdaq: nasdaq,
                     snp: snp
                 }
+                console.log(stocksResults, "=========stocks==========") 
+                console.log(newsResults,"=====news=====")
                 // pass the object into index.handlebars
                 res.render("index", hbsObj);
             })
