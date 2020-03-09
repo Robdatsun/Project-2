@@ -86,9 +86,6 @@ module.exports = function (app) {
             })
             // put all results into an object
             .then(results => {
-                console.log(dow,"dow==========")
-                console.log(nasdaq, "nasdaq=============")
-                console.log(snp,"snp===========")
                 let hbsObj = {
                     stocks: stocksResults,
                     news: newsResults,
