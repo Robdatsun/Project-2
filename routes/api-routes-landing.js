@@ -9,6 +9,12 @@ module.exports = function (app) {
         let queriesStocks = [];
         let newsResults = [];
         let stocksResults = [];
+        let queriesdow = [];
+        let dow = [];
+        let queriesnasdaq = [];
+        let nasdaq = [];
+        let queriessnp = [];
+        let snp = [];        
         
         db.Stock.findAll()
             // grab symbols from seed database
@@ -20,7 +26,36 @@ module.exports = function (app) {
                     let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + result[i].dataValues.symbol.toUpperCase() + "&apikey=" + process.env.apiKeyAlphaVantage1;
                     queriesStocks.push(fetch(queryURL_stocks));
                 }
-
+                let queryURL_dow = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=DOW&apikey=" + process.env.apiKeyAlphaVantage1;
+                queriesdow.push(fetch(queryURL_dow));
+                let queryURL_nasdaq = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=NDAQ&apikey=" + process.env.apiKeyAlphaVantage1;
+                queriesnasdaq.push(fetch(queryURL_nasdaq));
+                let queryURL_snp = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=SNP&apikey=" + process.env.apiKeyAlphaVantage1;
+                queriessnp.push(fetch(queryURL_snp));
+                return Promise.all(queriesdow);
+            })
+            .then(results => {
+                results.forEach(result => {
+                    result.json().then(json => {
+                        dow.push(json);
+                    })
+                })
+                return Promise.all(queriesnasdaq);
+            })
+            .then(results => {
+                results.forEach(result => {
+                    result.json().then(json => {
+                        nasdaq.push(json);
+                    })
+                })
+                return Promise.all(queriessnp);
+            })
+            .then(results => {
+                results.forEach(result => {
+                    result.json().then(json => {
+                        snp.push(json);
+                    })
+                })
                 return Promise.all(queriesNews);
             })
             .then(results => {
@@ -34,16 +69,21 @@ module.exports = function (app) {
             .then(async (results) => {
                 await results.forEach(result => {
                     result.json().then(json => stocksResults.push(json))
-                    // console.log(stocksResults)
                 })
             })
             .then(results => {
+                console.log(dow,"dow==========")
+                console.log(nasdaq, "nasdaq=============")
+                console.log(snp,"snp===========")
                 let hbsObj = {
                     stocks: stocksResults,
-                    news: newsResults
+                    news: newsResults,
+                    dow: dow,
+                    nasdaq: nasdaq,
+                    snp: snp
                 }
-                console.log(stocksResults, "====== stock ======");
-                console.log(newsResults, "====== news ========")
+                // console.log(stocksResults, "====== stock ======");
+                // console.log(newsResults, "====== news ========")
 
                 res.render("index", hbsObj);
             })

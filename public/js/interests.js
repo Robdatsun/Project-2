@@ -1,22 +1,12 @@
 $(document).ready(function (){
-    // $(document).on("click","button.addNews",addNews);
+    // event handler
     $(document).on("click",".addSymbol",addSymbol);
-
-    // function addNews (event) {
-    //     let news = $(".addNews");
-    //     $.ajax("/api/interests/news", {
-    //         method: "POST",
-    //         data: {topic: news.val().trim()}
-    //     }).then(()=>{
-    //         location.reload();
-    //     })
-    // }
-
     // add symbol function
     // takes value from input
     function addSymbol (event) {
+        console.log("hello")
         let symbol = $("#addSymbol");
-        $.ajax("/api/intersts/symbols", {
+        $.ajax("/api/symbols", {
             method: "POST",
             data: {symbol: symbol.val().trim()}
         }).then(()=>{
