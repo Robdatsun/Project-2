@@ -1,0 +1,60 @@
+<!-- .hero -->
+    <section class="hero has-background-black">
+        <div class="hero-body">
+            <div class="columns is-centered">
+                <div class="column is-one-third has-text-centered">Dow Jones</div>
+                <div class="column is-one-third has-text-centered">Nasdaq</div>
+                <div class="column is-one-third has-text-centered">S &amp; P 500</div>
+            </div>
+        </div>
+    </section>
+    <!-- /.hero -->
+    ​
+    <!-- /.section -->
+    <section class="section">
+        <div class="container">
+            <div class="columns grid-xl">
+                <div class="column is-half">
+                    <div class="notification is-light">
+                        <button class="delete"></button>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem ipsum dolor sit amet, consectetur
+                        adipiscing elit
+                    </div>
+                    <div class="notification is-light">
+                        <button class="delete"></button>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem ipsum dolor sit amet, consectetur
+                        adipiscing elit
+                    </div>
+                    <div class="notification is-light">
+                        <button class="delete"></button>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit lorem ipsum dolor sit amet, consectetur
+                        adipiscing elit
+                    </div>
+                </div>
+                <div class="column is-half">
+                    <figure class="image card is-5by4">
+                        <img src="https://www.stocktrader.com/wp-content/uploads/2013/12/TradingView-stock-chart.png">
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.section -->
+    ​
+    <div class="block">
+        <article class="message is-dark">
+            <div class="message-header has-text-weight-bold">
+                <h1 class="title has-text-white">News</h1>
+            </div>
+            {{#each news}}
+            <div class="message-body">
+                {{#each this.data}}
+                <img src ="{{this.image_url}}" width="75px" height="75px">
+                <h3 class="subtitle is-3">{{this.title}}</h3>
+                <p>{{this.text}}</p>
+                <p>{{this.news_url}}</p>
+                {{/each}}
+            </div>
+            {{/each}}
+        </article>
+    </div>
