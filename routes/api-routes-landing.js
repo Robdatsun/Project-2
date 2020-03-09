@@ -1,14 +1,18 @@
+// dependencies
 const db = require("../models");
 const fetch = require('node-fetch');
-
+// exporting
 module.exports = function (app) {
-
-
+    // get route
     app.get("/", function (req, res) {
+        // arrays to keep results
         let queriesNews = [];
         let queriesStocks = [];
         let newsResults = [];
         let stocksResults = [];
+
+        // find all sequelize query
+
         let queriesdow = [];
         let dow = [];
         let queriesnasdaq = [];
@@ -16,16 +20,20 @@ module.exports = function (app) {
         let queriessnp = [];
         let snp = [];        
         
+
         db.Stock.findAll()
             // grab symbols from seed database
             .then(function (result) {
+                // loop through seed results and pass on to fetch data from api
                 for (let i = 0; i < result.length; i++) {
-
                     let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + result[i].dataValues.symbol.toUpperCase() + "&items=3&token=" + process.env.apiKeyStockNews;
                     queriesNews.push(fetch(queryURL_news));
                     let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + result[i].dataValues.symbol.toUpperCase() + "&apikey=" + process.env.apiKeyAlphaVantage1;
                     queriesStocks.push(fetch(queryURL_stocks));
                 }
+
+                // fulfill a promise
+
                 let queryURL_dow = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=DOW&apikey=" + process.env.apiKeyAlphaVantage1;
                 queriesdow.push(fetch(queryURL_dow));
                 let queryURL_nasdaq = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=NDAQ&apikey=" + process.env.apiKeyAlphaVantage1;
@@ -56,21 +64,27 @@ module.exports = function (app) {
                         snp.push(json);
                     })
                 })
+
                 return Promise.all(queriesNews);
             })
+            // turn results into json format
             .then(results => {
                 results.forEach(result => {
                     result.json().then(json => {
                         newsResults.push(json);
                     })
                 })
+                // fulfill another promise
                 return Promise.all(queriesStocks)
             })
+            // turn results into json format
+            // async|await so that script doesn't move on to the next step
             .then(async (results) => {
                 await results.forEach(result => {
                     result.json().then(json => stocksResults.push(json))
                 })
             })
+            // put all results into an object
             .then(results => {
                 console.log(dow,"dow==========")
                 console.log(nasdaq, "nasdaq=============")
@@ -82,14 +96,13 @@ module.exports = function (app) {
                     nasdaq: nasdaq,
                     snp: snp
                 }
-                // console.log(stocksResults, "====== stock ======");
-                // console.log(newsResults, "====== news ========")
-
+                // pass the object into index.handlebars
                 res.render("index", hbsObj);
             })
+            // catching error
             .catch((err) => { if (err) throw err });
     });
-    // posting into database works
+    // post route
     app.post("/api/symbols", function (req, res) {
         db.Stock.create({
             symbol: req.body.symbol

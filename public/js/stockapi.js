@@ -1,3 +1,4 @@
+// will not be used unless adding a delete route
 $("#btn").on("click", function() {
     console.log("was clicked");
     let userInput = $("#stockSearch").val();
