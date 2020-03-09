@@ -1,3 +1,4 @@
+// model for Stock table with property id, symbol, and no timestamps
 module.exports = function (sequelize, DataTypes) {
     const Stock = sequelize.define("Stock", {
         symbol: {
