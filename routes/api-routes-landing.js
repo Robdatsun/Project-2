@@ -1,9 +1,9 @@
-// dependencies
 const db = require("../models");
 const fetch = require('node-fetch');
 
 module.exports = function (app) {
-    // get route
+
+
     app.get("/", function (req, res) {
         let queriesNews = [];
         let queriesStocks = [];
@@ -34,6 +34,7 @@ module.exports = function (app) {
             .then(async (results) => {
                 await results.forEach(result => {
                     result.json().then(json => stocksResults.push(json))
+                    // console.log(stocksResults)
                 })
             })
             .then(results => {
@@ -41,9 +42,9 @@ module.exports = function (app) {
                     stocks: stocksResults,
                     news: newsResults
                 }
-                // console.log(stocksResults, "====== stock ======");
-                // console.log(newsResults, "====== news ========")
-                // render index
+                console.log(stocksResults, "====== stock ======");
+                console.log(newsResults, "====== news ========")
+
                 res.render("index", hbsObj);
             })
             .catch((err) => { if (err) throw err });
