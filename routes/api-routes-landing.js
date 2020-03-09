@@ -2,8 +2,7 @@ const db = require("../models");
 const fetch = require('node-fetch');
 
 module.exports = function (app) {
-
-
+    // get route
     app.get("/", function (req, res) {
         let queriesNews = [];
         let queriesStocks = [];
@@ -15,12 +14,11 @@ module.exports = function (app) {
         let nasdaq = [];
         let queriessnp = [];
         let snp = [];        
-        
+        // sequelize query for getting data
         db.Stock.findAll()
             // grab symbols from seed database
             .then(function (result) {
                 for (let i = 0; i < result.length; i++) {
-
                     let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + result[i].dataValues.symbol.toUpperCase() + "&items=3&token=" + process.env.apiKeyStockNews;
                     queriesNews.push(fetch(queryURL_news));
                     let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + result[i].dataValues.symbol.toUpperCase() + "&apikey=" + process.env.apiKeyAlphaVantage1;
@@ -72,9 +70,6 @@ module.exports = function (app) {
                 })
             })
             .then(results => {
-                console.log(dow,"dow==========")
-                console.log(nasdaq, "nasdaq=============")
-                console.log(snp,"snp===========")
                 let hbsObj = {
                     stocks: stocksResults,
                     news: newsResults,
