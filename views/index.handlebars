@@ -4,17 +4,38 @@
             <div class="columns is-centered">
 
                 {{#each dow}}
-                <div class="column is-one-third has-text-centered">Dow Jones</div>
+                {{#each this}}
+                <div class="column is-one-third has-text-centered">
+                    <span>Dow Jones</span> <br>
+                    <span>Open:{{[02. open]}}</span> <br>
+                    <span>Previous Close: {{[08. previous close]}}</span> <br>
+                    <span>Price: {{[05. price]}}</span>
+                </div>
+                {{/each}}
                 {{/each}}
 
                 {{#each nasdaq}}
-                <div class="column is-one-third has-text-centered">Nasdaq</div>
+                {{#each this}}
+                <div class="column is-one-third has-text-centered">
+                    <span>Nasdaq</span> <br>
+                    <span>Open:{{[02. open]}}</span> <br>
+                    <span>Previous Close: {{[08. previous close]}}</span> <br>
+                    <span>Price: {{[05. price]}}</span>
+                </div>
+                {{/each}}
                 {{/each}}
 
                 {{#each snp}}
-                <div class="column is-one-third has-text-centered">S &amp; P 500</div>
+                {{#each this}}
+                <div class="column is-one-third has-text-centered">
+                    <span>S &amp; P 500</span> <br>
+                    <span>Open:{{[02. open]}}</span> <br>
+                    <span>Previous Close: {{[08. previous close]}}</span> <br>
+                    <span>Price: {{[05. price]}}</span>
+                </div>
                 {{/each}}
-                
+                {{/each}}
+
             </div>
         </div>
     </section>
