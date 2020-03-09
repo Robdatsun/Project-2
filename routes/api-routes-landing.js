@@ -15,17 +15,21 @@ module.exports = function (app) {
         let queriesnasdaq = [];
         let nasdaq = [];
         let queriessnp = [];
-        let snp = [];        
+        let snp = [];
+        let key = [process.env.apiKeyAlphaVantage1, process.env.apiKeyAlphaVantage2, process.env.apiKeyAlphaVantage3, process.env.apiKeyAlphaVantage4];       
         // find all sequelize queries
         db.Stock.findAll()
             // grab symbols from seed database
             .then(function (result) {
+                let index = 0
                 // loop through seed results and pass on to fetch data from api
                 for (let i = 0; i < result.length; i++) {
                     let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + result[i].dataValues.symbol.toUpperCase() + "&items=3&token=" + process.env.apiKeyStockNews;
                     queriesNews.push(fetch(queryURL_news));
-                    let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + result[i].dataValues.symbol.toUpperCase() + "&apikey=" + process.env.apiKeyAlphaVantage1;
+                    let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + result[i].dataValues.symbol.toUpperCase() + "&apikey=" + key[index];
                     queriesStocks.push(fetch(queryURL_stocks));
+                    index += 1;
+                    if (index >= key.length) index = 0;
                 }
 
                 let queryURL_dow = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=DOW&apikey=" + process.env.apiKeyAlphaVantage2;
