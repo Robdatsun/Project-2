@@ -2,9 +2,19 @@
     <section class="hero has-background-black">
         <div class="hero-body">
             <div class="columns is-centered">
+
+                {{#each dow}}
                 <div class="column is-one-third has-text-centered">Dow Jones</div>
+                {{/each}}
+
+                {{#each nasdaq}}
                 <div class="column is-one-third has-text-centered">Nasdaq</div>
+                {{/each}}
+
+                {{#each snp}}
                 <div class="column is-one-third has-text-centered">S &amp; P 500</div>
+                {{/each}}
+                
             </div>
         </div>
     </section>
