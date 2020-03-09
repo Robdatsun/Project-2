@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>STock MArket TRacker</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>  
+
+    <style>
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-item field">
+            <input id="addSymbol" class="input" type="search" placeholder="Search by name/symbol"> 
+            {{!-- id addSymbol --}}
+        </div>
+
+
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-link">
+                        <strong>Sign up</strong>
+                    </a>
+                    <a class="button is-light">
+                        Log in
+                    </a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </nav>
+    
+
+    {{{body}}}
+
+    
+    <!--footer-->
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+                Stock Tracker App &copy; 2020
+            </p>
+        </div>
+    </footer>
+    <!--/footer-->
+
+    <script src="/js/interest.js"></script>
+</body>
+
+</html>
