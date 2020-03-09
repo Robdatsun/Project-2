@@ -1,45 +1,63 @@
+// dependencies
 const db = require("../models");
+const fetch = require('node-fetch');
 
 module.exports = function (app) {
-    let stocksSearch;
-    let newsSearch;
-    app.get("/api", function (req, res) {
-        db.ProfStock.findAll().then(function (result) { // grab symbols from seed database
-            stocksSearch = { symbols: result };
-            // res.json(stocksSearch);
-           return db.ProfNews.findAll();
-        }).then(function (result) { // grab topics from seed database
-            newsSearch = { topics: result };
+    // get route
+    app.get("/", function (req, res) {
+        let queriesNews = [];
+        let queriesStocks = [];
+        let newsResults = [];
+        let stocksResults = [];
+        
+        db.Stock.findAll()
+            // grab symbols from seed database
+            .then(function (result) {
+                for (let i = 0; i < result.length; i++) {
 
-            res.json({stocks: stocksSearch, news: newsSearch});
-            // res.json(newsSearch);
-        })
+                    let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + result[i].dataValues.symbol.toUpperCase() + "&items=3&token=" + process.env.apiKeyStockNews;
+                    queriesNews.push(fetch(queryURL_news));
+                    let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + result[i].dataValues.symbol.toUpperCase() + "&apikey=" + process.env.apiKeyAlphaVantage1;
+                    queriesStocks.push(fetch(queryURL_stocks));
+                }
 
-        /// how to chain to make an ajax call to grab info from stocks api and news api then render
-
+                return Promise.all(queriesNews);
+            })
+            .then(results => {
+                results.forEach(result => {
+                    result.json().then(json => {
+                        newsResults.push(json);
+                    })
+                })
+                return Promise.all(queriesStocks)
+            })
+            .then(async (results) => {
+                await results.forEach(result => {
+                    result.json().then(json => stocksResults.push(json))
+                })
+            })
+            .then(results => {
+                let hbsObj = {
+                    stocks: stocksResults,
+                    news: newsResults
+                }
+                // console.log(stocksResults, "====== stock ======");
+                // console.log(newsResults, "====== news ========")
+                // render index
+                res.render("index", hbsObj);
+            })
+            .catch((err) => { if (err) throw err });
     });
-
-    app.post("/api/interests/news", function (req, res) {
-        db.ProfNews.create({
-            topic: req.body.topic
-        })
-        .then(function (result){
-            res.json(true);
-        })
-        .catch(function (err){
-            res.json(err);
-        })
-    })
-
-    app.post("/api/interests/symbols", function (req,res){
-        db.ProfStock.create({
+    // posting into database works
+    app.post("/api/symbols", function (req, res) {
+        db.Stock.create({
             symbol: req.body.symbol
         })
-        .then(function(result){
-            res.json(true);
-        })
-        .catch(function(err){
-            res.json(err);
-        });
+            .then(function (result) {
+                res.json(true);
+            })
+            .catch(function (err) {
+                res.json(err);
+            });
     });
 }

@@ -1,12 +1,12 @@
 module.exports = function (sequelize, DataTypes) {
-    var HomeNews = sequelize.define("HomeNews", {
-        topic: {
+    const Stock = sequelize.define("Stock", {
+        symbol: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                len: [1, 255]
+                len: [1, 10]
             }
         }
-    });
-    return HomeNews;
+    }, {timestamps: false});
+    return Stock;
 };

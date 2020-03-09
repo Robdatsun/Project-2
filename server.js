@@ -4,7 +4,7 @@ require('dotenv').config() // for initializing .env file | for keeping your pass
 const express = require("express");
 // const session = require("express-session");
 // const passport = require("./config/authentication");
-// const db = require("./models");
+const db = require("./models");
 
 // Sets up the Express App
 // =============================================================
@@ -33,11 +33,11 @@ app.set("view engine", "handlebars");
 // =============================================================
 // app.use("/",apiRoutes);
 // app.use("/",htmlRoutes);
-require("./routes/api-auth")(app)
+// require("./routes/api-auth")(app)
 // const apiRoutes = require ("./routes/apiRoutes");
 // const htmlRoutes = require ("./routes/htmlRoutes");
 
-// require("./routes/api-routes.js")(app);
+require("./routes/api-routes-landing.js")(app);
 // require("./routes/html-routes.js")(app); if we have one
 
 // Starting our Express app ====== if using sequelize
