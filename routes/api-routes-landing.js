@@ -116,7 +116,6 @@ module.exports = function (app) {
                 res.json(err);
             });
     });
-
     app.delete("/api/symbols/:symbol", function (req,res) {
         console.log(req.params.symbol, "req.params.symbol=========");
         db.Stock.destroy({
