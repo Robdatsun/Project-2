@@ -52,13 +52,12 @@
                 {{#each stocks}}
                 {{#each this}}
                 <div class="notification is-light">
-
+                    <button class="delete deleteSymbolBtn" data-id="{{[01. symbol]}}"></button>
                     <strong>{{[01. symbol]}}</strong>
                     <p>Price: {{[05. price]}}</p>
                     <p>Change: {{[10. change percent]}}</p>
                     <p>Open: {{[02. open]}}</p>
                     <p>Previous Close: {{[08. previous close]}}</p>
-
                 </div>
                 {{/each}}
                 {{/each}}
