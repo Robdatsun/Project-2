@@ -52,21 +52,26 @@
                 {{#each stocks}}
                 {{#each this}}
                 <div class="notification is-light has-background-grey-lighter">
-
+                    <button class="delete deleteSymbolBtn" data-id="{{[01. symbol]}}"></button>
                     <strong id="title2">{{[01. symbol]}}</strong>
                     <p id="price2">Price: {{[05. price]}}</p>
                     <p id="change2">Change: {{[10. change percent]}}</p>
                     <p id="openS2">Open: {{[02. open]}}</p>
                     <p id="closeS2">Previous Close: {{[08. previous close]}}</p>
-
                 </div>
                 {{/each}}
                 {{/each}}
             </div>
             <div class="column is-half">
-                <figure class="image card is-5by4">
+                <div class="tradingview-widget-container">
+                    <div id="tradingview_c114c"></div>
+                    <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/"
+                            rel="noopener" target="_blank"><span class="blue-text">AAPL Chart</span></a> by TradingView
+                    </div>
+                </div>
+                {{!-- <figure class="image card is-5by4">
                     <img src="https://www.stocktrader.com/wp-content/uploads/2013/12/TradingView-stock-chart.png">
-                </figure>
+                </figure> --}}
             </div>
         </div>
     </div>
@@ -76,15 +81,15 @@
 <div class="block">
     <article class="message is-dark">
         <div class="message-header has-text-weight-bold">
-            <h1 class="title has-text-white">News</h1>
+            <h3 class="title is-3 has-text-white">News</h3>
         </div>
         {{#each news}}
         <div class="message-body">
             {{#each this.data}}
-            <img src="{{this.image_url}}" width="75px" height="75px">
-            <h3 class="subtitle is-3">{{this.title}}</h3>
+            <a href="{{this.news_url}}">
+                <h6 class="title is-6">{{this.title}}</h6>
+            </a>
             <p>{{this.text}}</p>
-            <p>{{this.news_url}}</p>
             {{/each}}
         </div>
         {{/each}}

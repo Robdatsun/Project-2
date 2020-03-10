@@ -6,6 +6,7 @@ module.exports = function (app) {
     // get route
     app.get("/", function (req, res) {
         // arrays to keep results
+        let queries = [];
         let queriesNews = [];
         let queriesStocks = [];
         let newsResults = [];
@@ -16,23 +17,20 @@ module.exports = function (app) {
         let nasdaq = [];
         let queriessnp = [];
         let snp = [];
-        let key = [process.env.apiKeyAlphaVantage1, process.env.apiKeyAlphaVantage2, process.env.apiKeyAlphaVantage3, process.env.apiKeyAlphaVantage4];       
         // find all sequelize queries
         db.Stock.findAll()
             // grab symbols from seed database
             .then(function (result) {
-                let index = 0
+                
                 // loop through seed results and pass on to fetch data from api
                 for (let i = 0; i < result.length; i++) {
                     let queryURL_news = "https://stocknewsapi.com/api/v1?tickers=" + result[i].dataValues.symbol.toUpperCase() + "&items=3&token=" + process.env.apiKeyStockNews;
                     queriesNews.push(fetch(queryURL_news));
-                    let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + result[i].dataValues.symbol.toUpperCase() + "&apikey=" + key[index];
+                    let queryURL_stocks = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + result[i].dataValues.symbol.toUpperCase() + "&apikey=" + process.env.apiKeyAlphaVantage;
                     queriesStocks.push(fetch(queryURL_stocks));
-                    index += 1;
-                    if (index >= key.length) index = 0;
                 }
 
-                let queryURL_dow = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=DOW&apikey=" + process.env.apiKeyAlphaVantage2;
+                let queryURL_dow = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=DOW&apikey=" + process.env.apiKeyAlphaVantage1;
                 queriesdow.push(fetch(queryURL_dow));
                 let queryURL_nasdaq = "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=NDAQ&apikey=" + process.env.apiKeyAlphaVantage3;
                 queriesnasdaq.push(fetch(queryURL_nasdaq));
@@ -95,7 +93,8 @@ module.exports = function (app) {
                     news: newsResults,
                     dow: dow,
                     nasdaq: nasdaq,
-                    snp: snp
+                    snp: snp,
+                    id: queries
                 }
                 console.log(stocksResults, "=========stocks==========") 
                 console.log(newsResults,"=====news=====")
@@ -117,4 +116,11 @@ module.exports = function (app) {
                 res.json(err);
             });
     });
+
+    app.delete("/api/symbols/:symbol", function (req,res) {
+        console.log(req.params.symbol, "req.params.symbol=========");
+        db.Stock.destroy({
+            where: {symbol: req.params.symbol}
+        }).then( ()=>{res.end()})
+    })
 }
