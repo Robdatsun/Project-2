@@ -81,15 +81,17 @@
         <div class="message-header has-text-weight-bold">
             <h3 class="title is-3 has-text-white">News</h3>
         </div>
-        {{#each news}}
-        <div class="message-body">
-            {{#each this.data}}
-            <a href="{{this.news_url}}" target="_blank">
-                <h6 class="title is-6">{{this.title}}</h6>
-            </a>
-            <p>{{this.text}}</p>
-            {{/each}}
-        </div>
-        {{/each}}
     </article>
+    {{#each news}}
+    <div class="message-body">
+        {{#each this.data}}
+        <a href="{{this.news_url}}" target="_blank">
+            <h4 class="title is-5">{{this.title}}</h4>
+        </a>
+        <p>{{this.text}}</p>
+        <p class="is-size-6 has-text-grey">{{this.source_name}} ::: <spanclass="is-size-6 has-text-grey-light">{{this.date}}</span></p>
+        <hr>
+        {{/each}}
+    </div>
+    {{/each}}
 </div>
