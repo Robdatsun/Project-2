@@ -39,7 +39,6 @@ $(document).ready(function () {
     //         location.reload();
     //     })
     // });
-
     // $(".deleteSymbolBtn").on("click", (event) => {
     //     event.preventDefault();
     //     // delete symbol function
